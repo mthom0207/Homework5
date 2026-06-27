@@ -4,3 +4,191 @@ author: Merilyn Thomas, Bryan Sandor, Tyler White
 format: html
 ---
 
+# Homework 5
+
+## Task 1: Conceptual Questions
+
+1.  The purpose of `lapply` is to apply a function to each element of the supplied list. The equivalent `purr` function is `map`
+2.  `lapply(my_list, FUN = cor, method = "kendall")`
+3. `purr` functions work within the tidyverse (they are pipeable) as well as having consistent arguments across different types that we are working with
+4. A side-effect function is one that performs a certain task outside of the code (plot, print, generate csv, etc) and leaves the original data as-is
+5. sd is defined locally within the function, so if that function is being called, R looks within that function's namespace first. If R does not find a variable called sd() with a function, it will use whatever is defined globally.
+
+
+## Task 2
+
+### Part 1
+
+```{r}
+getRMSE = function(y, yHat, ...){
+  
+  devs = (y - yHat)^2
+  RMSE = sqrt(mean(devs, ...))
+  
+  return(RMSE)
+  
+}
+```
+
+### Part 2
+
+Run example code
+```{r}
+set.seed(10)
+n <- 100
+x <- runif(n)
+resp <- 3 + 10 * x + rnorm(n)
+pred <- predict(lm(resp ~ x), data.frame(x))
+```
+
+Test
+```{r}
+getRMSE(y = resp, yHat = pred)
+```
+
+Test without specifying NA behavior
+```{r}
+resp[c(23,15)] = NA_real_
+
+## Without NA Behavior
+getRMSE(y = resp, yHat = pred)
+```
+
+Test With NA Behavior
+```{r}
+resp[c(23,15)] = NA_real_
+
+## Without NA Behavior
+getRMSE(y = resp, yHat = pred, na.rm = TRUE)
+```
+### Part 3
+```{r}
+getMAE = function(y, yHat, ...){
+  absDev = abs(y - yHat)
+  
+  MAE = (mean(absDev, ...))
+  return(MAE)
+}
+```
+
+### Part 4
+
+```{r}
+set.seed(10)
+n <- 100
+x <- runif(n)
+resp <- 3 + 10 * x + rnorm(n)
+pred <- predict(lm(resp ~ x), data.frame(x))
+```
+
+Test without removing variables
+```{r}
+getMAE(y = resp, yHat = pred)
+```
+Remove some responses:
+```{r}
+resp[c(7,11)] = NA_real_
+```
+
+Test without NA behavior
+```{r}
+getMAE(y = resp, yHat = pred)
+```
+
+Test with NA behavior
+```{r}
+getMAE(y = resp, yHat = pred, na.rm = TRUE)
+```
+
+### Part 5
+```{r}
+
+getErrors = function(y, yHat, output = "all", ...){
+  
+
+    if (is.atomic(y) & is.numeric(y) & is.atomic(y)){
+      invisible(y)
+    }
+    else{
+      stop("Bad input")
+      
+    if (is.atomic(yHat) & is.numeric(yHat) & is.atomic(yHat)){
+      invisible(y)
+    }
+    else{
+      stop("Bad input")}
+    
+    
+    
+    
+  }
+  
+  if (output == "RMSE"){
+    return(c("RMSE" = getRMSE(y, yHat, ...)))
+  }
+  else if (output == "MAE"){
+    return(c("MAE" = getMAE(y, yHat, ...)))
+  }
+  else if(output == "all"){
+    RMSE = c("RMSE" = getRMSE(y, yHat, ...))
+    MAE = c("MAE" = getMAE(y, yHat, ...))
+    return(list(RMSE = RMSE, MAE = MAE))
+  }
+  else{
+    stop("Bad Input")
+  }
+}
+
+```
+
+
+### Part 6
+
+Generate Test Data
+```{r}
+set.seed(10)
+n <- 100
+x <- runif(n)
+resp <- 3 + 10 * x + rnorm(n)
+pred <- predict(lm(resp ~ x), data.frame(x))
+```
+
+Test function
+
+Both MAE and RMSE
+```{r}
+getErrors(y = resp, yHat = pred)
+```
+MAE
+```{r}
+getErrors(y = resp, yHat = pred, output = "MAE")
+```
+
+RMSE
+```{r}
+getErrors(y = resp, yHat = pred, output = "RMSE")
+```
+
+Remove Data & Test
+```{r}
+resp[c(7,11)] = NA_real_
+```
+
+Test without NA behavior
+```{r}
+getErrors(y = resp, yHat = pred, output = "RMSE")
+```
+Test with NA Behavior
+```{r}
+getErrors(y = resp, yHat = pred, output = "RMSE", na.rm = TRUE)
+```
+
+Test with poorly specified data:
+```{r}
+getErrors(y = as.character(resp), yHat = pred, output = "RMSE", na.rm = TRUE)
+
+```
+```{r}
+getErrors(y = data.frame(resp), yHat = pred, output = "RMSE", na.rm = TRUE)
+```
+
