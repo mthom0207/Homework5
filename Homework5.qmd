@@ -1,6 +1,26 @@
 ---
 title: "Homework5"
-author: Merilyn Thomas, Bryan Sandor, Tyler White
+author: Bryan Sandor, Merilyn Thomas, Tyler White
 format: html
+editor:
+  markdown:
+    wrap: 80
+editor_options: 
+  chunk_output_type: console
 ---
 
+# Preamble
+This homework explores advanced function writing in `R`.
+
+# Task 1: Conceptual Questions
+1. What is the purpose of the `lapply()` function? What is the equivalent `purrr` function?
+
+2. Suppose we have a list called `my_list`. Each element of the list is a numeric data frame (all columns are numeric). We want to use `lapply()` to run the code `cor(numeric_matrix, method = "kendall")` on each element of the list. Write code to do this below! (I'm really trying to ask you how you specify `method = "kendall"` when calling `lapply()`)
+
+3. What are two advantages of using `purrr` functions instead of the `BaseR` apply family?
+
+4. What is a side-effect function?
+
+5. Why can you name a variable `sd` in a function and not cause any issues with the `sd` function?
+
+# Task 2 - Writing R Functions
