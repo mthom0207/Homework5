@@ -4,6 +4,34 @@
     "href": "Homework5.html",
     "title": "Homework5",
     "section": "",
-    "text": "Preamble\nThis homework explores advanced function writing in R.\n\n\nTask 1: Conceptual Questions\n\nWhat is the purpose of the lapply() function? What is the equivalent purrr function?\nSuppose we have a list called my_list. Each element of the list is a numeric data frame (all columns are numeric). We want to use lapply() to run the code cor(numeric_matrix, method = \"kendall\") on each element of the list. Write code to do this below! (I’m really trying to ask you how you specify method = \"kendall\" when calling lapply())\nWhat are two advantages of using purrr functions instead of the BaseR apply family?\nWhat is a side-effect function?\nWhy can you name a variable sd in a function and not cause any issues with the sd function?\n\n\n\nTask 2 - Writing R Functions"
+    "text": "This homework explores advanced function writing in R."
+  },
+  {
+    "objectID": "Homework5.html#subtask-1",
+    "href": "Homework5.html#subtask-1",
+    "title": "Homework5",
+    "section": "Subtask 1",
+    "text": "Subtask 1\nFor a set of responses \\(y_1, y_2, \\ldots, y_n\\) (variables of interest which we want to predict) and a set of corresponding predictions for those observations \\(\\hat{y}_1, \\hat{y}_2, \\ldots, \\hat{y}_n\\), the Root Mean Square Error (RMSE) is \\[RMSE = \\sqrt{\\frac{1}{n} \\sum_{i = 1}^n (y_i - \\hat{y}_i)^2}\\] Write a basic function that takes in a vector of responses and a vector of predictions and outputs the RMSE.\n\ngetRMSE &lt;- function(vec_resp, vec_pred, ...){\n  MSE &lt;- mean((vec_resp - vec_pred)^2, ...)\n  \n  return(sqrt(MSE))\n}"
+  },
+  {
+    "objectID": "Homework5.html#subtask-2",
+    "href": "Homework5.html#subtask-2",
+    "title": "Homework5",
+    "section": "Subtask 2",
+    "text": "Subtask 2\nWe run the following code to create some (controlled) response and prediction values.\n\nset.seed(10)\nn &lt;- 100\nx &lt;- runif(n)\nresp &lt;- 3 + 10 * x + rnorm(n)\npred &lt;- predict(lm(resp ~ x), data.frame(x)) # Note the tilde character ~ within the `lm` function\n\nNow we test the RMSE function on the data.\n\ngetRMSE(resp, pred)\n\n[1] 0.9581677\n\n\nNow we test the RMSE function with two NA_real_ values in the response data.\n\nresp[1] &lt;- NA_real_\nresp[2] &lt;- NA_real_\n\ngetRMSE(resp, pred)\n\n[1] NA\n\ngetRMSE(resp, pred, na.rm = TRUE)\n\n[1] 0.9661699"
+  },
+  {
+    "objectID": "Homework5.html#subtask-3",
+    "href": "Homework5.html#subtask-3",
+    "title": "Homework5",
+    "section": "Subtask 3",
+    "text": "Subtask 3\nAnother common metric for evaluating predictions is the Mean Absolute Error (MAE) \\[MAE = \\frac{1}{n} \\sum_{i = 1}^n |y_i - \\hat{y}_i|\\] So we now write a function getMAE() providing the MAE for supplied data.\n\ngetMAE &lt;- function(vec_resp, vec_pred, ...){\n  return(mean(abs(vec_resp - vec_pred), ...))\n}"
+  },
+  {
+    "objectID": "Homework5.html#subtask-4",
+    "href": "Homework5.html#subtask-4",
+    "title": "Homework5",
+    "section": "Subtask 4",
+    "text": "Subtask 4\nWe run the same randomizer as before\n\nset.seed(10)\nn &lt;- 100\nx &lt;- runif(n)\nresp &lt;- 3 + 10 * x + rnorm(n)\npred &lt;- predict(lm(resp ~ x), data.frame(x))\n\nAnd test our new function on it\n\ngetMAE(resp, pred)\n\n[1] 0.8155776\n\n\nAnd finally check it with the optional argument\n\nresp[1] &lt;- NA_real_\nresp[2] &lt;- NA_real_\n\ngetMAE(resp, pred)\n\n[1] NA\n\ngetMAE(resp, pred, na.rm = TRUE)\n\n[1] 0.8241201"
   }
 ]

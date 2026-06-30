@@ -24,3 +24,81 @@ This homework explores advanced function writing in `R`.
 5. Why can you name a variable `sd` in a function and not cause any issues with the `sd` function?
 
 # Task 2 - Writing R Functions
+## Subtask 1
+For a set of responses $y_1, y_2, \ldots, y_n$ (variables of interest which we want to predict) and a set of corresponding predictions for those observations $\hat{y}_1, \hat{y}_2, \ldots, \hat{y}_n$, the Root Mean Square Error (RMSE) is $$RMSE = \sqrt{\frac{1}{n} \sum_{i = 1}^n (y_i - \hat{y}_i)^2}$$ Write a basic function that takes in a _vector_ of responses and a _vector_ of predictions and outputs the RMSE.
+
+```{r subtask_1}
+getRMSE <- function(vec_resp, vec_pred, ...){
+  MSE <- mean((vec_resp - vec_pred)^2, ...)
+  
+  return(sqrt(MSE))
+}
+```
+
+## Subtask 2
+We run the following code to create some (controlled) response and prediction values.
+
+```{r subtask_2_a}
+#| code-overflow: wrap
+#| 
+set.seed(10)
+n <- 100
+x <- runif(n)
+resp <- 3 + 10 * x + rnorm(n)
+pred <- predict(lm(resp ~ x), data.frame(x)) # Note the tilde character ~ within the `lm` function
+```
+
+Now we test the RMSE function on the data.
+
+```{r subtask_2_b}
+getRMSE(resp, pred)
+```
+
+Now we test the RMSE function with two `NA_real_` values in the response data.
+
+```{r}
+resp[1] <- NA_real_
+resp[2] <- NA_real_
+
+getRMSE(resp, pred)
+
+getRMSE(resp, pred, na.rm = TRUE)
+```
+
+## Subtask 3
+Another common metric for evaluating predictions is the Mean Absolute Error (MAE) $$MAE = \frac{1}{n} \sum_{i = 1}^n |y_i - \hat{y}_i|$$ So we now write a function `getMAE()` providing the MAE for supplied data.
+
+```{r subtask_3}
+getMAE <- function(vec_resp, vec_pred, ...){
+  return(mean(abs(vec_resp - vec_pred), ...))
+}
+```
+
+## Subtask 4
+We run the same randomizer as before
+
+```{r subtask_4_a}
+set.seed(10)
+n <- 100
+x <- runif(n)
+resp <- 3 + 10 * x + rnorm(n)
+pred <- predict(lm(resp ~ x), data.frame(x))
+```
+
+And test our new function on it
+
+```{r subtask_4_b}
+getMAE(resp, pred)
+```
+
+And finally check it with the optional argument
+
+```{r subtask_4_c}
+resp[1] <- NA_real_
+resp[2] <- NA_real_
+
+getMAE(resp, pred)
+
+getMAE(resp, pred, na.rm = TRUE)
+```
+
