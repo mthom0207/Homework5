@@ -16,7 +16,7 @@ editor: visual
 ### 2. Suppose we have a list called my_list. Each element of the list is a numeric data frame (all columns are numeric). We want use lapply() to run the code cor(numeric_matrix, method = "kendall") on each element of the list. Write code to do this below! (I’m really trying to ask you how you specify method = "kendall" when calling lapply())
 
 ```{r}
-#| eval: false
+#| error: true
 
 # list called my_list
 # Use lapply() to the run the code below: 
@@ -160,12 +160,14 @@ resp[c(26, 54)] <- NA_real_
 
 # Test function with missing values, specifying behavior
 (get_metrics(resp, pred, na.rm = TRUE))
+```
 
+```{r}
+#| error: true
 # Test by passing incorrect data (a data frame) to trigger the error
 invalid_data <- data.frame(val = c(1, 2, 3))
 
 get_metrics(data.frame(resp), pred) 
 
 get_metrics(invalid_data, pred) 
-
 ```
