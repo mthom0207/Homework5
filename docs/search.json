@@ -33,5 +33,19 @@
     "title": "Homework5",
     "section": "Subtask 4",
     "text": "Subtask 4\nWe run the same randomizer as before\n\nset.seed(10)\nn &lt;- 100\nx &lt;- runif(n)\nresp &lt;- 3 + 10 * x + rnorm(n)\npred &lt;- predict(lm(resp ~ x), data.frame(x))\n\nAnd test our new function on it\n\ngetMAE(resp, pred)\n\n[1] 0.8155776\n\n\nAnd finally check it with the optional argument\n\nresp[1] &lt;- NA_real_\nresp[2] &lt;- NA_real_\n\ngetMAE(resp, pred)\n\n[1] NA\n\ngetMAE(resp, pred, na.rm = TRUE)\n\n[1] 0.8241201"
+  },
+  {
+    "objectID": "Homework5.html#subtask-5",
+    "href": "Homework5.html#subtask-5",
+    "title": "Homework5",
+    "section": "Subtask 5",
+    "text": "Subtask 5\nNow we construct a wrapper function, utilizing the previous two functions.\n\nwrapper &lt;- function(x, y, RMSE = TRUE, MAE = TRUE, ...){\n  if (is.numeric(x) & is.vector(x) & is.atomic(x) & \n      is.numeric(y) & is.vector(y) & is.atomic(y)){\n    if (RMSE){\n      cat(paste0(\"RMSE: \", getRMSE(x, y, ...)))\n      if (MAE){\n        return(cat(paste0(\"\\n\", \"MAE: \", getMAE(x, y, ...))))\n      }\n    }\n    if (MAE){\n      cat(paste0(\"MAE: \", getMAE(x, y, ...)))\n    }\n  } else {\n    print(\"Please supply two numeric (atomic) vectors!\")\n  }\n}"
+  },
+  {
+    "objectID": "Homework5.html#subtask-6",
+    "href": "Homework5.html#subtask-6",
+    "title": "Homework5",
+    "section": "Subtask 6",
+    "text": "Subtask 6\nFinally, we generate the pseudo-random data again\n\nset.seed(10)\nn &lt;- 100\nx &lt;- runif(n)\nresp &lt;- 3 + 10 * x + rnorm(n)\npred &lt;- predict(lm(resp ~ x), data.frame(x))\n\n\nWe now call the new function thrice, specifying each metric individually and then together\n\n\nwrapper(resp, pred, MAE = FALSE)\n\nRMSE: 0.958167655151933\n\nwrapper(resp, pred, RMSE = FALSE)\n\nMAE: 0.815577593682669\n\nwrapper(resp, pred)\n\nRMSE: 0.958167655151933\nMAE: 0.815577593682669\n\n\n\nThen we replace two of the values in the responses with NA and test the function\n\n\nresp[1] &lt;- NA_real_\nresp[2] &lt;- NA_real_\n\nwrapper(resp, pred)\n\nRMSE: NA\nMAE: NA\n\nwrapper(resp, pred, na.rm = TRUE)\n\nRMSE: 0.966169936538663\nMAE: 0.824120056659464\n\n\n\nFinally, we feed the wrapper function data that is not the correct format\n\n\na &lt;- list(1, 2, \"3\")\nb &lt;- matrix(1:9, nrow = 3, ncol = 3, byrow = TRUE)\nd &lt;- c(\"1\", \"2\", \"3\")\n\nwrapper(a, b)\n\n[1] \"Please supply two numeric (atomic) vectors!\"\n\nwrapper(b, d)\n\n[1] \"Please supply two numeric (atomic) vectors!\""
   }
 ]

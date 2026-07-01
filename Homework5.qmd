@@ -102,3 +102,66 @@ getMAE(resp, pred)
 getMAE(resp, pred, na.rm = TRUE)
 ```
 
+## Subtask 5
+Now we construct a __wrapper__ function, utilizing the previous two functions.
+
+```{r subtask_5}
+wrapper <- function(x, y, RMSE = TRUE, MAE = TRUE, ...){
+  if (is.numeric(x) & is.vector(x) & is.atomic(x) & 
+      is.numeric(y) & is.vector(y) & is.atomic(y)){
+    if (RMSE){
+      cat(paste0("RMSE: ", getRMSE(x, y, ...)))
+      if (MAE){
+        return(cat(paste0("\n", "MAE: ", getMAE(x, y, ...))))
+      }
+    }
+    if (MAE){
+      cat(paste0("MAE: ", getMAE(x, y, ...)))
+    }
+  } else {
+    print("Please supply two numeric (atomic) vectors!")
+  }
+}
+```
+
+
+## Subtask 6
+Finally, we generate the pseudo-random data again
+
+```{r subtask_6_a}
+set.seed(10)
+n <- 100
+x <- runif(n)
+resp <- 3 + 10 * x + rnorm(n)
+pred <- predict(lm(resp ~ x), data.frame(x))
+```
+
+- We now call the new function thrice, specifying each metric individually and then together
+
+```{r subtask_6_b}
+wrapper(resp, pred, MAE = FALSE)
+wrapper(resp, pred, RMSE = FALSE)
+wrapper(resp, pred)
+```
+
+- Then we replace two of the values in the responses with `NA` and test the function
+
+```{r subtask_6_c}
+resp[1] <- NA_real_
+resp[2] <- NA_real_
+
+wrapper(resp, pred)
+wrapper(resp, pred, na.rm = TRUE)
+```
+
+- Finally, we feed the wrapper function data that is not the correct format
+
+```{r subtask_6_d}
+a <- list(1, 2, "3")
+b <- matrix(1:9, nrow = 3, ncol = 3, byrow = TRUE)
+d <- c("1", "2", "3")
+
+wrapper(a, b)
+wrapper(b, d)
+```
+
