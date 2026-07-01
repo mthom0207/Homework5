@@ -10,10 +10,9 @@ format: html
 
 1.  The purpose of `lapply` is to apply a function to each element of the supplied list. The equivalent `purr` function is `map`
 2.  `lapply(my_list, FUN = cor, method = "kendall")`
-3. `purr` functions work within the tidyverse (they are pipeable) as well as having consistent arguments across different types that we are working with
-4. A side-effect function is one that performs a certain task outside of the code (plot, print, generate csv, etc) and leaves the original data as-is
-5. sd is defined locally within the function, so if that function is being called, R looks within that function's namespace first. If R does not find a variable called sd() with a function, it will use whatever is defined globally.
-
+3.  `purr` functions work within the tidyverse (they are pipeable) as well as having consistent arguments across different types that we are working with
+4.  A side-effect function is one that performs a certain task outside of the code (plot, print, generate csv, etc) and leaves the original data as-is
+5.  sd is defined locally within the function, so if that function is being called, R looks within that function's namespace first. If R does not find a variable called sd() with a function, it will use whatever is defined globally.
 
 ## Task 2
 
@@ -33,6 +32,7 @@ getRMSE = function(y, yHat, ...){
 ### Part 2
 
 Run example code
+
 ```{r}
 set.seed(10)
 n <- 100
@@ -42,11 +42,13 @@ pred <- predict(lm(resp ~ x), data.frame(x))
 ```
 
 Test
+
 ```{r}
 getRMSE(y = resp, yHat = pred)
 ```
 
 Test without specifying NA behavior
+
 ```{r}
 resp[c(23,15)] = NA_real_
 
@@ -55,13 +57,16 @@ getRMSE(y = resp, yHat = pred)
 ```
 
 Test With NA Behavior
+
 ```{r}
 resp[c(23,15)] = NA_real_
 
 ## Without NA Behavior
 getRMSE(y = resp, yHat = pred, na.rm = TRUE)
 ```
+
 ### Part 3
+
 ```{r}
 getMAE = function(y, yHat, ...){
   absDev = abs(y - yHat)
@@ -82,25 +87,31 @@ pred <- predict(lm(resp ~ x), data.frame(x))
 ```
 
 Test without removing variables
+
 ```{r}
 getMAE(y = resp, yHat = pred)
 ```
+
 Remove some responses:
+
 ```{r}
 resp[c(7,11)] = NA_real_
 ```
 
 Test without NA behavior
+
 ```{r}
 getMAE(y = resp, yHat = pred)
 ```
 
 Test with NA behavior
+
 ```{r}
 getMAE(y = resp, yHat = pred, na.rm = TRUE)
 ```
 
 ### Part 5
+
 ```{r}
 
 getErrors = function(y, yHat, output = "all", ...){
@@ -141,10 +152,10 @@ getErrors = function(y, yHat, output = "all", ...){
 
 ```
 
-
 ### Part 6
 
 Generate Test Data
+
 ```{r}
 set.seed(10)
 n <- 100
@@ -156,39 +167,50 @@ pred <- predict(lm(resp ~ x), data.frame(x))
 Test function
 
 Both MAE and RMSE
+
 ```{r}
 getErrors(y = resp, yHat = pred)
 ```
+
 MAE
+
 ```{r}
 getErrors(y = resp, yHat = pred, output = "MAE")
 ```
 
 RMSE
+
 ```{r}
 getErrors(y = resp, yHat = pred, output = "RMSE")
 ```
 
 Remove Data & Test
+
 ```{r}
 resp[c(7,11)] = NA_real_
 ```
 
 Test without NA behavior
+
 ```{r}
 getErrors(y = resp, yHat = pred, output = "RMSE")
 ```
+
 Test with NA Behavior
+
 ```{r}
 getErrors(y = resp, yHat = pred, output = "RMSE", na.rm = TRUE)
 ```
 
 Test with poorly specified data:
+
 ```{r}
+#| error: true
 getErrors(y = as.character(resp), yHat = pred, output = "RMSE", na.rm = TRUE)
 
 ```
+
 ```{r}
+#| error: true
 getErrors(y = data.frame(resp), yHat = pred, output = "RMSE", na.rm = TRUE)
 ```
-
