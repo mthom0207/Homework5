@@ -181,11 +181,19 @@ window.Quarto = {
 <section id="task-1-conceptual-questions" class="level1">
 <h1>Task 1: Conceptual Questions</h1>
 <ol type="1">
-<li><p>What is the purpose of the <code>lapply()</code> function? What is the equivalent <code>purrr</code> function?</p></li>
-<li><p>Suppose we have a list called <code>my_list</code>. Each element of the list is a numeric data frame (all columns are numeric). We want to use <code>lapply()</code> to run the code <code>cor(numeric_matrix, method = "kendall")</code> on each element of the list. Write code to do this below! (I’m really trying to ask you how you specify <code>method = "kendall"</code> when calling <code>lapply()</code>)</p></li>
-<li><p>What are two advantages of using <code>purrr</code> functions instead of the <code>BaseR</code> apply family?</p></li>
-<li><p>What is a side-effect function?</p></li>
-<li><p>Why can you name a variable <code>sd</code> in a function and not cause any issues with the <code>sd</code> function?</p></li>
+<li><p>What is the purpose of the <code>lapply()</code> function? What is the equivalent <code>purrr</code> function?</p>
+<p>Response: The <code>lapply()</code> function applies a user provided function to all the elements of a <code>list</code> (or <code>vector</code>) efficiently. The equivalent <code>purrr</code> function is <code>map()</code>.</p></li>
+<li><p>Suppose we have a list called <code>my_list</code>. Each element of the list is a numeric data frame (all columns are numeric). We want to use <code>lapply()</code> to run the code <code>cor(numeric_matrix, method = "kendall")</code> on each element of the list. Write code to do this below! (I’m really trying to ask you how you specify <code>method = "kendall"</code> when calling <code>lapply()</code>)</p>
+<p><code>lapply(d, cor, method = "kendall")</code></p></li>
+<li><p>What are two advantages of using <code>purrr</code> functions instead of the <code>BaseR</code> apply family?</p>
+<ul>
+<li>One advantage is <code>purr</code> is within the <code>tidyverse</code>, providing more consistency and helper functions.</li>
+<li>The other advantage is it provides and alternative to the <code>apply()</code> functions.</li>
+</ul></li>
+<li><p>What is a side-effect function?</p>
+<p>A side-effect function is one which changes the value of, say, a global variable from within the function.</p></li>
+<li><p>Why can you name a variable <code>sd</code> in a function and not cause any issues with the <code>sd</code> function?</p>
+<p>Because the scope of the function is local instead of global.</p></li>
 </ol>
 </section>
 <section id="task-2---writing-r-functions" class="level1">
