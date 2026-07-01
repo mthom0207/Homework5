@@ -117,20 +117,17 @@ getMAE(y = resp, yHat = pred, na.rm = TRUE)
 getErrors = function(y, yHat, output = "all", ...){
   
 
-    if (is.atomic(y) & is.numeric(y) & is.atomic(y)){
+    if (is.atomic(y) & is.numeric(y) & is.vector(y)){
       invisible(y)
     }
     else{
       stop("Bad input")
       
-    if (is.atomic(yHat) & is.numeric(yHat) & is.atomic(yHat)){
+    if (is.atomic(yHat) & is.numeric(yHat) & is.vector(yHat)){
       invisible(y)
     }
     else{
       stop("Bad input")}
-    
-    
-    
     
   }
   
